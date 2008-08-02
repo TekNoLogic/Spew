@@ -15,10 +15,10 @@ cf:SetScript("OnHide", cf.ScrollToBottom)
 cf:SetScript("OnMouseWheel", function(frame, delta)
 	if delta > 0 then
 		if IsShiftKeyDown() then frame:ScrollToTop()
-		else frame:ScrollUp() end
+		else for i=1,4 do frame:ScrollUp() end end
 	elseif delta < 0 then
 		if IsShiftKeyDown() then frame:ScrollToBottom()
-		else frame:ScrollDown() end
+		else for i=1,4 do frame:ScrollDown() end end
 	end
 end)
 
