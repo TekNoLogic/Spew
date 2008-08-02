@@ -41,17 +41,38 @@ local function ArgsToString(a1, ...)
 	else return pretty_tostring(a1), ArgsToString(...) end
 end
 
-local input
+
+local blist, input = {GetDisabledFontObject = true, GetHighlightFontObject = true, GetNormalFontObject = true}
 local function downcasesort(a,b) return a and b and tostring(a):lower() < tostring(b):lower() end
+local function pcallhelper(success, ...) if success then return string.join(", ", ArgsToString(...)) end end
 function Spew(a1, ...)
 	if select('#', ...) == 0 then
 		if type(a1) == "table" then
-			Print("|cff9f9f9f{  -- "..input.."|r")
-			local sorttable = {}
-			for i in pairs(a1) do table.insert(sorttable, i) end
-			table.sort(sorttable, downcasesort)
-			for _,i in ipairs(sorttable) do Print("  |cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(a1[i])) end
-			Print("|cff9f9f9f}  -- "..input.."|r")
+			if type(rawget(a1, 0)) == "userdata" and type(a1.GetObjectType) == "function" then
+				-- We've got a frame!
+				Print("|cffffea00<"..a1:GetObjectType()..":"..(a1:GetName() or input"(anon)").."|r")
+				local sorttable = {}
+				for i in pairs(a1) do table.insert(sorttable, i) end
+				for i in pairs(getmetatable(a1).__index) do table.insert(sorttable, i) end
+				table.sort(sorttable, downcasesort)
+				for _,i in ipairs(sorttable) do
+					local v, output = a1[i]
+					if type(v) == "function" and type(i) == "string" and not blist[i] and (i:find("^Is") or i:find("^Can") or i:find("^Get")) then
+						output = pcallhelper(pcall(v, a1))
+					end
+					if output then Print("  |cff7fd5ff"..tostring(i).."|r => "..output)
+					else Print("  |cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(v)) end
+				end
+				Print("|cffffea00>|r", true)
+			else
+				-- Normal table
+				Print("|cff9f9f9f{  -- "..input.."|r")
+				local sorttable = {}
+				for i in pairs(a1) do table.insert(sorttable, i) end
+				table.sort(sorttable, downcasesort)
+				for _,i in ipairs(sorttable) do Print("  |cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(a1[i])) end
+				Print("|cff9f9f9f}  -- "..input.."|r")
+			end
 		else Print(pretty_tostring(a1)) end
 	else
 		Print(string.join(", ", ArgsToString(a1, ...)))
@@ -65,3 +86,26 @@ function SlashCmdList.SPEW(text)
 	local f, err = loadstring("Spew("..input..")")
 	if f then f() else Print("|cffff0000Error:|r "..err) end
 end
+
+
+--[[
+-- Testing code to help find crashes
+TEKX = TEKX or 0
+local blist, input = {GetDisabledFontObject = true, GetHighlightFontObject = true, GetNormalFontObject = true}
+local function downcasesort(a,b) return a and b and tostring(a):lower() < tostring(b):lower() end
+local a1=PlayerFrame
+local sorttable = {}
+for i in pairs(a1) do table.insert(sorttable, i) end
+for i in pairs(getmetatable(a1).__index) do table.insert(sorttable, i) end
+table.sort(sorttable, downcasesort)
+for j,i in ipairs(sorttable) do
+        local v, output = a1[i]
+        if j > TEKX and type(v) == "function" and type(i) == "string" and not blist[i] and i:find("^Get") then
+TEKX = j
+ChatFrame1:AddMessage("Testing "..TEKX.." - "..i)
+                output = pcall(v, a1)
+return
+        end
+end
+ChatFrame1:AddMessage("Done testing")
+]]
