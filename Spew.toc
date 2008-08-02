@@ -6,5 +6,8 @@
 ## Version: Alpha
 ## X-Category: Development Tools
 
+## LoadManagers: AddonLoader
+## X-LoadOn-Slash: /spew
+
 tekPanelAuction.lua
 Spew.lua
