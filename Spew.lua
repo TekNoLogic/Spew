@@ -42,13 +42,15 @@ local function ArgsToString(a1, ...)
 end
 
 local input
+local function downcasesort(a,b) return a and b and tostring(a):lower() < tostring(b):lower() end
 function Spew(a1, ...)
 	if select('#', ...) == 0 then
 		if type(a1) == "table" then
 			Print("|cff9f9f9f{  -- "..input.."|r")
-			for i,v in pairs(a1) do
-				Print("  |cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(v))
-			end
+			local sorttable = {}
+			for i in pairs(a1) do table.insert(sorttable, i) end
+			table.sort(sorttable, downcasesort)
+			for _,i in ipairs(sorttable) do Print("  |cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(a1[i])) end
 			Print("|cff9f9f9f}  -- "..input.."|r")
 		else Print(pretty_tostring(a1)) end
 	else
