@@ -1,0 +1,9 @@
+## Interface: 30000
+
+## Title: Spew
+## Notes: Spews out lua
+## Author: Tekkub Stoutwrithe
+## Version: Alpha
+## X-Category: Development Tools
+
+Spew.lua
