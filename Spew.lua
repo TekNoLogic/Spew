@@ -70,7 +70,7 @@ function Spew(a1, ...)
 		if type(a1) == "table" then
 			if type(rawget(a1, 0)) == "userdata" and type(a1.GetObjectType) == "function" then
 				-- We've got a frame!
-				Print("|cffffea00<"..a1:GetObjectType()..":"..(a1:GetName() or input"(anon)").."|r")
+				Print("|cffffea00<"..a1:GetObjectType()..":"..(a1:GetName() or input.."(anon)").."|r")
 				local sorttable = {}
 				for i in pairs(a1) do table.insert(sorttable, i) end
 				for i in pairs(getmetatable(a1).__index) do table.insert(sorttable, i) end
