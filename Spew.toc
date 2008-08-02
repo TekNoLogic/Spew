@@ -6,4 +6,5 @@
 ## Version: Alpha
 ## X-Category: Development Tools
 
+tekPanelAuction.lua
 Spew.lua

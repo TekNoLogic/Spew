@@ -2,10 +2,30 @@
 local TABLEDEPTH = 5
 local tostring, TableToString = tostring
 
+local panel = LibStub("tekPanel-Auction").new("SpewPanel", "Spew")
+local cf = CreateFrame("ScrollingMessageFrame", nil, panel)
+cf:SetPoint("TOPLEFT", 25, -75)
+cf:SetPoint("BOTTOMRIGHT", -15, 40)
+cf:SetMaxLines(1000)
+cf:SetFontObject(ChatFontSmall)
+cf:SetJustifyH("LEFT")
+cf:SetFading(false)
+cf:EnableMouseWheel(true)
+cf:SetScript("OnHide", cf.ScrollToBottom)
+cf:SetScript("OnMouseWheel", function(frame, delta)
+	if delta > 0 then
+		if IsShiftKeyDown() then frame:ScrollToTop()
+		else frame:ScrollUp() end
+	elseif delta < 0 then
+		if IsShiftKeyDown() then frame:ScrollToBottom()
+		else frame:ScrollDown() end
+	end
+end)
 
-local function Print(text)
+
+local function Print(text, frame)
 	if not text or text:len() == 0 then text = " " end
-	DEFAULT_CHAT_FRAME:AddMessage(text)
+	(frame or cf):AddMessage(text)
 end
 
 
@@ -63,7 +83,8 @@ function Spew(a1, ...)
 					if output then Print("  |cff7fd5ff"..tostring(i).."|r => "..output)
 					else Print("  |cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(v)) end
 				end
-				Print("|cffffea00>|r", true)
+				Print("|cffffea00>|r")
+				ShowUIPanel(panel)
 			else
 				-- Normal table
 				Print("|cff9f9f9f{  -- "..input.."|r")
@@ -72,10 +93,11 @@ function Spew(a1, ...)
 				table.sort(sorttable, downcasesort)
 				for _,i in ipairs(sorttable) do Print("  |cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(a1[i])) end
 				Print("|cff9f9f9f}  -- "..input.."|r")
+				ShowUIPanel(panel)
 			end
-		else Print(pretty_tostring(a1)) end
+		else Print(pretty_tostring(a1), DEFAULT_CHAT_FRAME) end
 	else
-		Print(string.join(", ", ArgsToString(a1, ...)))
+		Print(string.join(", ", ArgsToString(a1, ...)), DEFAULT_CHAT_FRAME)
 	end
 end
 
@@ -83,8 +105,11 @@ end
 SLASH_SPEW1 = "/spew"
 function SlashCmdList.SPEW(text)
 	input = text:trim():match("^(.-);*$")
-	local f, err = loadstring("Spew("..input..")")
-	if f then f() else Print("|cffff0000Error:|r "..err) end
+	if input == "" then ShowUIPanel(panel)
+	else
+		local f, err = loadstring("Spew("..input..")")
+		if f then f() else Print("|cffff0000Error:|r "..err) end
+	end
 end
 
 
