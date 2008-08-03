@@ -9,5 +9,6 @@
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Slash: /spew
 
+LibStub.lua
 tekPanelAuction.lua
 Spew.lua
