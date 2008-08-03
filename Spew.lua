@@ -80,8 +80,8 @@ function Spew(a1, ...)
 					if type(v) == "function" and type(i) == "string" and not blist[i] and (i:find("^Is") or i:find("^Can") or i:find("^Get")) then
 						output = pcallhelper(pcall(v, a1))
 					end
-					if output then Print("  |cff7fd5ff"..tostring(i).."|r => "..output)
-					else Print("  |cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(v)) end
+					if output then Print("    |cff7fd5ff"..tostring(i).."|r => "..output)
+					else Print("    |cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(v)) end
 				end
 				Print("|cffffea00>|r")
 				ShowUIPanel(panel)
@@ -91,7 +91,7 @@ function Spew(a1, ...)
 				local sorttable = {}
 				for i in pairs(a1) do table.insert(sorttable, i) end
 				table.sort(sorttable, downcasesort)
-				for _,i in ipairs(sorttable) do Print("  |cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(a1[i])) end
+				for _,i in ipairs(sorttable) do Print("    |cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(a1[i])) end
 				Print("|cff9f9f9f}  -- "..input.."|r")
 				ShowUIPanel(panel)
 			end
