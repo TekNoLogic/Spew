@@ -1,0 +1,18 @@
+Spew is a dev tool based off Iriel's "DevTools":http://www.wowinterface.com/downloads/info3999-DevTools.html and "Ace2's":http://www.wowace.com/wiki/AceConsole-2.0 @/dump@ commands.  It does the same basic thing (running lua code snippets and printing out the results), but in a slightly different way.
+
+Why did I create Spew?
+* I liked DevTools, but didn't like it's output style (sorry Iriel)
+* I liked Ace2's style, but not it's code (table recursion so deep you need a timer to ensure you don't execute too long?  Gag me with spoon!)
+* I hated how both these addons spammed up the chatframe
+
+So what does Spew do?  Simple, you give it a bit of lua and it evaluates it.  If the result is a table or frame, it pops open a panel and dumps detailed info.  It the result is a simple value or multiple values, it prints a single line is the chatframe.  Like Ace2, Spew will call various @:Get*@, @:Is*@ and @:Can*@ functions on frames and outputs their results.  It will also shallow-recurse one level into subtables, and print up to 5 values for each.
+
+To run spew, simply type @/spew some_lua_here@.  The frame can be opened by simply typing @/spew@
+
+Spew will, of course, take advantage of "AddonLoader":http://www.wowace.com/wiki/AddonLoader if it is present and not load until it's slash command is used.
+
+h2. Links
+
+<b>Visit "my site":http://www.tekkub.net/addons/Spew for more info.<br>
+Please report all bugs and feature requests to my "Google Code":http://code.google.com/p/tekkub-wow/issues/list?can=1&q=addon:Spew&sort=status+milestone&colspec=ID%20Type%20Status%20Addon%20Milestone%20Summary tracker<br>
+Please direct all feedback and questions to my "Google Groups":http://groups-beta.google.com/group/tekkub-wow mailinglist.</b>
