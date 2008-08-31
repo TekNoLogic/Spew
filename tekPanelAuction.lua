@@ -1,6 +1,6 @@
 
 
-local lib, oldminor = LibStub:NewLibrary("tekPanel-Auction", 1)
+local lib, oldminor = LibStub:NewLibrary("tekPanel-Auction", 2)
 if not lib then return end
 oldminor = oldminor or 0
 
@@ -34,6 +34,8 @@ function lib.new(name, titletext, splitstyle)
 
 	local portrait = createtex(frame, "OVERLAY", 57, 57, "TOPLEFT", 9, -7)
 	SetPortraitTexture(portrait, "player")
+	frame:SetScript("OnEvent", function(self, event, unit) if unit == "player" then SetPortraitTexture(portrait, "player") end end)
+	frame:RegisterEvent("UNIT_PORTRAIT_UPDATE")
 
 	local title = frame:CreateFontString(nil, "OVERLAY")
 	title:SetFontObject(GameFontNormal)
