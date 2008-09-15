@@ -65,7 +65,7 @@ end
 local blist, input = {GetDisabledFontObject = true, GetHighlightFontObject = true, GetNormalFontObject = true}
 local function downcasesort(a,b) return a and b and tostring(a):lower() < tostring(b):lower() end
 local function pcallhelper(success, ...) if success then return string.join(", ", ArgsToString(...)) end end
-function Spew(a1, ...)
+function Spew(input, a1, ...)
 	if select('#', ...) == 0 then
 		if type(a1) == "table" then
 			if type(rawget(a1, 0)) == "userdata" and type(a1.GetObjectType) == "function" then
@@ -95,9 +95,9 @@ function Spew(a1, ...)
 				Print("|cff9f9f9f}  -- "..input.."|r")
 				ShowUIPanel(panel)
 			end
-		else Print(pretty_tostring(a1), DEFAULT_CHAT_FRAME) end
+		else Print("|cff999999"..input.."|r => "..pretty_tostring(a1), DEFAULT_CHAT_FRAME) end
 	else
-		Print(string.join(", ", ArgsToString(a1, ...)), DEFAULT_CHAT_FRAME)
+		Print("|cff999999"..input.."|r => "..string.join(", ", ArgsToString(a1, ...)), DEFAULT_CHAT_FRAME)
 	end
 end
 
@@ -107,7 +107,7 @@ function SlashCmdList.SPEW(text)
 	input = text:trim():match("^(.-);*$")
 	if input == "" then ShowUIPanel(panel)
 	else
-		local f, err = loadstring("Spew("..input..")")
+		local f, err = loadstring("Spew([[".. input.."]], "..input..")")
 		if f then f() else Print("|cffff0000Error:|r "..err) end
 	end
 end
