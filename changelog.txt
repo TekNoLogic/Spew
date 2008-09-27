@@ -1,3 +1,7 @@
+3.0.1.2-Beta
+    Echo back the input when outputting single-line spewings
+    Embed update
+
 3.0.1.1-Beta
     And so it begins...
 
