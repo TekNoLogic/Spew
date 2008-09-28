@@ -113,6 +113,17 @@ function SlashCmdList.SPEW(text)
 end
 
 
+SLASH_SPEWMOUSE1 = "/spewmouse"
+function SlashCmdList.SPEWMOUSE()
+	local t, f = {}, EnumerateFrames()
+	while f do
+		if f:IsVisible() and MouseIsOver(f) then table.insert(t, f:GetName() or "<Anon>") end
+		f = EnumerateFrames(f)
+	end
+	Spew("Visible frames under mouse", t)
+end
+
+
 --[[
 -- Testing code to help find crashes
 TEKX = TEKX or 0
