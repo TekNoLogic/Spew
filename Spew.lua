@@ -107,7 +107,7 @@ function SlashCmdList.SPEW(text)
 	input = text:trim():match("^(.-);*$")
 	if input == "" then ShowUIPanel(panel)
 	else
-		local f, err = loadstring("Spew([[".. input.."]], "..input..")")
+		local f, err = loadstring(string.format("Spew(%q, %s)", input, input))
 		if f then f() else Print("|cffff0000Error:|r "..err) end
 	end
 end
