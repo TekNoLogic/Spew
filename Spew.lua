@@ -30,10 +30,11 @@ end
 
 
 local colors = {boolean = "|cffff9100", number = "|cffff7fff", ["nil"] = "|cffff7f7f"}
-local function escape(c) return "\\"..c:byte() end
+local noescape = {["\a"] = "a", ["\b"] = "b", ["\f"] = "f", ["\n"] = "n", ["\r"] = "r", ["\t"] = "t", ["\v"] = "v"}
+local function escape(c) return "\\".. (noescape[c] or c:byte()) end
 local function pretty_tostring(value)
 	local t = type(value)
-	if t == "string" then return '|cff00ff00"'..value:gsub("|", "||"):gsub("([\001-\012\014-\031\128-\255])", escape)..'"|r'
+	if t == "string" then return '|cff00ff00"'..value:gsub("|", "||"):gsub("([\001-\031\128-\255])", escape)..'"|r'
 	elseif t == "table" then
 		if type(rawget(value, 0)) == "userdata" and type(value.GetObjectType) == "function" then return "|cffffea00<"..value:GetObjectType()..":"..(value:GetName() or "(anon)")..">|r"
 		else return "|cff9f9f9f"..string.join(", ", TableToString(value)).."|r" end
