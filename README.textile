@@ -9,6 +9,8 @@ So what does Spew do?  Simple, you give it a bit of lua and it evaluates it.  If
 
 To run spew, simply type @/spew some_lua_here@.  The frame can be opened by simply typing @/spew@
 
+Spew can also list all visible frames under the mouse with the @/spewmouse@ command.
+
 Spew will, of course, take advantage of "AddonLoader":http://www.wowace.com/wiki/AddonLoader if it is present and not load until it's slash command is used.
 
 h2. Links
