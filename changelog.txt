@@ -1,3 +1,9 @@
+3.0.2.3-Beta
+    Don't escape out special chars like '\n'
+    Fix error with spewings that contain square brackets
+    Add /spewmouse for querying what frames are under the mouse 
+      - /wuv Wobin's Where's My Cow? for this code
+
 3.0.1.2-Beta
     Echo back the input when outputting single-line spewings
     Embed update
