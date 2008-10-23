@@ -23,6 +23,10 @@ cf:SetScript("OnMouseWheel", function(frame, delta)
 end)
 
 
+local b = LibStub("tekKonfig-Button").new(cf, "TOPRIGHT", cf, "BOTTOMRIGHT", -155, -3)
+b:SetText("Clear")
+b:SetScript("OnClick", function() cf:Clear() end)
+
 local function Print(text, frame)
 	if not text or text:len() == 0 then text = " " end
 	(frame or cf):AddMessage(text)

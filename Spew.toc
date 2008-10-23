@@ -11,4 +11,6 @@
 
 LibStub.lua
 tekPanelAuction.lua
+tekKonfigButton.lua
+
 Spew.lua
