@@ -7,7 +7,7 @@
 ## X-Category: Development Tools
 
 ## LoadManagers: AddonLoader
-## X-LoadOn-Slash: /spew, /spewmouse
+## X-LoadOn-Slash: /spew
 
 LibStub.lua
 tekPanelAuction.lua

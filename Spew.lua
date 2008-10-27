@@ -111,21 +111,17 @@ SLASH_SPEW1 = "/spew"
 function SlashCmdList.SPEW(text)
 	input = text:trim():match("^(.-);*$")
 	if input == "" then ShowUIPanel(panel)
+	elseif input == "mouse" then
+		local t, f = {}, EnumerateFrames()
+		while f do
+			if f:IsVisible() and MouseIsOver(f) then table.insert(t, f:GetName() or "<Anon>") end
+			f = EnumerateFrames(f)
+		end
+		Spew("Visible frames under mouse", t)
 	else
 		local f, err = loadstring(string.format("Spew(%q, %s)", input, input))
 		if f then f() else Print("|cffff0000Error:|r "..err) end
 	end
-end
-
-
-SLASH_SPEWMOUSE1 = "/spewmouse"
-function SlashCmdList.SPEWMOUSE()
-	local t, f = {}, EnumerateFrames()
-	while f do
-		if f:IsVisible() and MouseIsOver(f) then table.insert(t, f:GetName() or "<Anon>") end
-		f = EnumerateFrames(f)
-	end
-	Spew("Visible frames under mouse", t)
 end
 
 
