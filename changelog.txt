@@ -1,3 +1,7 @@
+3.0.2.4-Beta
+    Change '/spewmouse' to '/spew mouse'... seem AddonLoader can only handle a single slash handler
+    Add button to clear spewings
+
 3.0.2.3-Beta
     Don't escape out special chars like '\n'
     Fix error with spewings that contain square brackets
