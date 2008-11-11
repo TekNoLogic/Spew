@@ -1,5 +1,5 @@
 
-local TABLEDEPTH = 5
+local TABLEITEMS, TABLEDEPTH = 5, 1
 local tostring, TableToString = tostring
 
 local panel = LibStub("tekPanel-Auction").new("SpewPanel", "Spew")
@@ -36,28 +36,31 @@ end
 local colors = {boolean = "|cffff9100", number = "|cffff7fff", ["nil"] = "|cffff7f7f"}
 local noescape = {["\a"] = "a", ["\b"] = "b", ["\f"] = "f", ["\n"] = "n", ["\r"] = "r", ["\t"] = "t", ["\v"] = "v"}
 local function escape(c) return "\\".. (noescape[c] or c:byte()) end
-local function pretty_tostring(value)
+local function pretty_tostring(value, depth)
+	depth = depth or 0
 	local t = type(value)
 	if t == "string" then return '|cff00ff00"'..value:gsub("|", "||"):gsub("([\001-\031\128-\255])", escape)..'"|r'
 	elseif t == "table" then
-		if type(rawget(value, 0)) == "userdata" and type(value.GetObjectType) == "function" then return "|cffffea00<"..value:GetObjectType()..":"..(value:GetName() or "(anon)")..">|r"
-		else return "|cff9f9f9f"..string.join(", ", TableToString(value)).."|r" end
+		if depth > TABLEDEPTH then return "|cff9f9f9f{...}|r"
+		elseif type(rawget(value, 0)) == "userdata" and type(value.GetObjectType) == "function" then return "|cffffea00<"..value:GetObjectType()..":"..(value:GetName() or "(anon)")..">|r"
+		else return "|cff9f9f9f"..string.join(", ", TableToString(value, nil, nil, depth+1)).."|r" end
 	elseif colors[t] then return colors[t]..tostring(value).."|r"
 	else return tostring(value) end
 end
 
 
-function TableToString(t, lasti, depth)
+function TableToString(t, lasti, items, depth)
+	items = items or 0
 	depth = depth or 0
-	if depth > TABLEDEPTH then return "...|cff9f9f9f}|r" end
+	if items > TABLEITEMS then return "...|cff9f9f9f}|r" end
 	local i,v = next(t, lasti)
-	if depth == 0 then
-		if next(t, i) then return "|cff9f9f9f{|cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(v), TableToString(t, i, depth+1)
+	if items == 0 then
+		if next(t, i) then return "|cff9f9f9f{|cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(v, depth), TableToString(t, i, 1, depth)
 		elseif v == nil then return "|cff9f9f9f{}|r"
-		else return "|cff9f9f9f{|cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(v).."|cff9f9f9f}|r" end
+		else return "|cff9f9f9f{|cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(v, depth).."|cff9f9f9f}|r" end
 	end
-	if next(t, i) then return "|cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(v), TableToString(t, i, depth+1) end
-	return "|cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(v).."|cff9f9f9f}|r"
+	if next(t, i) then return "|cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(v, depth), TableToString(t, i, items+1, depth) end
+	return "|cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(v, depth).."|cff9f9f9f}|r"
 end
 
 
@@ -96,7 +99,7 @@ function Spew(input, a1, ...)
 				local sorttable = {}
 				for i in pairs(a1) do table.insert(sorttable, i) end
 				table.sort(sorttable, downcasesort)
-				for _,i in ipairs(sorttable) do Print("    |cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(a1[i])) end
+				for _,i in ipairs(sorttable) do Print("    |cff7fd5ff"..tostring(i).."|r = "..pretty_tostring(a1[i], 1)) end
 				Print("|cff9f9f9f}  -- "..input.."|r")
 				ShowUIPanel(panel)
 			end
