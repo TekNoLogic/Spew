@@ -5,6 +5,7 @@
 ## Author: Tekkub Stoutwrithe
 ## Version: Alpha
 ## X-Category: Development Tools
+## X-Icon: Interface\Icons\Spell_Nature_Acid_01
 
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Slash: /spew
