@@ -71,7 +71,13 @@ end
 
 
 local blist, input = {GetDisabledFontObject = true, GetHighlightFontObject = true, GetNormalFontObject = true}
-local function downcasesort(a,b) return a and b and tostring(a):lower() < tostring(b):lower() end
+local function downcasesort(a,b)
+	local ta, tb = type(a), type(b)
+	if ta == "number" and tb ~= "number" then return true end
+	if ta ~= "number" and tb == "number" then return false end
+	if ta == "number" and tb == "number" then return a < b end
+	return a and b and tostring(a):lower() < tostring(b):lower()
+end
 local function pcallhelper(success, ...) if success then return string.join(", ", ArgsToString(...)) end end
 function Spew(input, a1, ...)
 	if select('#', ...) == 0 then
