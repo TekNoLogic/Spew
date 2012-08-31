@@ -124,8 +124,12 @@ function SlashCmdList.SPEW(text)
 	if input == "" then ShowUIPanel(panel)
 	elseif input == "mouse" then
 		local t, f = {}, EnumerateFrames()
+		SpewMouse = {}
 		while f do
-			if f:IsVisible() and MouseIsOver(f) then table.insert(t, f:GetName() or "<Anon>") end
+			if f:IsVisible() and MouseIsOver(f) then
+				table.insert(SpewMouse, f)
+				table.insert(t, f:GetName() or "<Anon>")
+			end
 			f = EnumerateFrames(f)
 		end
 		Spew("Visible frames under mouse", t)
