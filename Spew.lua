@@ -1,8 +1,10 @@
 
+local myname, ns = ...
+
 local TABLEITEMS, TABLEDEPTH = 5, 1
 local tostring, TableToString = tostring
 
-local panel = LibStub("tekPanel-Auction").new("SpewPanel", "Spew")
+local panel = ns.tekPanelAuction("SpewPanel", "Spew")
 local cf = CreateFrame("ScrollingMessageFrame", nil, panel)
 cf:SetPoint("TOPLEFT", 25, -75)
 cf:SetPoint("BOTTOMRIGHT", -15, 40)
