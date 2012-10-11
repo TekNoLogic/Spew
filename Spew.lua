@@ -132,7 +132,7 @@ function SlashCmdList.SPEW(text)
 			end
 			f = EnumerateFrames(f)
 		end
-		Spew("Visible frames under mouse", t)
+		Spew("Visible frames under mouse (stored in table `SpewMouse`", t)
 	else
 		local f, err = loadstring(string.format("Spew(%q, %s)", input, input))
 		if f then f() else Print("|cffff0000Error:|r "..err) end
