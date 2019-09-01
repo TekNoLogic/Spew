@@ -96,7 +96,7 @@ function Spew(input, a1, ...)
 				table.sort(sorttable, downcasesort)
 				for _,i in ipairs(sorttable) do
 					local v, output = a1[i]
-					if type(v) == "function" and type(i) == "string" and not blist[i] and (i:find("^Is") or i:find("^Can") or i:find("^Get")) then
+					if type(v) == "function" and type(i) == "string" and not blist[i] and ((i:find("^Is") and i ~= "IsUnit") or i:find("^Can") or i:find("^Get")) then
 						output = pcallhelper(pcall(v, a1))
 					end
 					if output then Print("    |cff7fd5ff"..tostring(i).."|r => "..output)
