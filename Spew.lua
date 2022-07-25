@@ -1,4 +1,4 @@
-
+---@diagnostic disable: undefined-field, unbalanced-assignments
 local myname, ns = ...
 
 local TABLEITEMS, TABLEDEPTH = 5, 1
@@ -88,7 +88,7 @@ function Spew(input, a1, ...)
 		if type(a1) == "table" then
 			if type(rawget(a1, 0)) == "userdata" and type(a1.GetObjectType) == "function" then
 				-- We've got a frame!
-				if a1:IsForbidden() then Print("|cffff0000<Forbidden:"..input.."|r")
+				if a1.IsForbidden and a1:IsForbidden() then Print("|cffff0000<Forbidden:"..input.."|r")
 				else Print("|cffffea00<"..a1:GetObjectType()..":"..(a1:GetName() or input.."(anon)").."|r") end
 				local sorttable = {}
 				for i in pairs(a1) do table.insert(sorttable, i) end
