@@ -1,4 +1,4 @@
-
+---@diagnostic disable: undefined-field, unbalanced-assignments
 local myname, ns = ...
 
 local TABLEITEMS, TABLEDEPTH = 5, 1
@@ -44,7 +44,9 @@ local function pretty_tostring(value, depth)
 	if t == "string" then return '|cff00ff00"'..value:gsub("|", "||"):gsub("([\001-\031\128-\255])", escape)..'"|r'
 	elseif t == "table" then
 		if depth > TABLEDEPTH then return "|cff9f9f9f{...}|r"
-		elseif type(rawget(value, 0)) == "userdata" and type(value.GetObjectType) == "function" then return "|cffffea00<"..value:GetObjectType()..":"..(value:GetName() or "(anon)")..">|r"
+		elseif type(rawget(value, 0)) == "userdata" and type(value.GetObjectType) == "function" then
+			if value.IsForbidden and value:IsForbidden() then return "|cffff0000<Forbidden:(unknown)>|r"
+			else return "|cffffea00<"..value:GetObjectType()..":"..(value:GetName() or "(anon)")..">|r" end
 		else return "|cff9f9f9f"..string.join(", ", TableToString(value, nil, nil, depth+1)).."|r" end
 	elseif colors[t] then return colors[t]..tostring(value).."|r"
 	else return tostring(value) end
@@ -86,14 +88,15 @@ function Spew(input, a1, ...)
 		if type(a1) == "table" then
 			if type(rawget(a1, 0)) == "userdata" and type(a1.GetObjectType) == "function" then
 				-- We've got a frame!
-				Print("|cffffea00<"..a1:GetObjectType()..":"..(a1:GetName() or input.."(anon)").."|r")
+				if a1.IsForbidden and a1:IsForbidden() then Print("|cffff0000<Forbidden:"..input.."|r")
+				else Print("|cffffea00<"..a1:GetObjectType()..":"..(a1:GetName() or input.."(anon)").."|r") end
 				local sorttable = {}
 				for i in pairs(a1) do table.insert(sorttable, i) end
 				for i in pairs(getmetatable(a1).__index) do table.insert(sorttable, i) end
 				table.sort(sorttable, downcasesort)
 				for _,i in ipairs(sorttable) do
 					local v, output = a1[i]
-					if type(v) == "function" and type(i) == "string" and not blist[i] and (i:find("^Is") or i:find("^Can") or i:find("^Get")) then
+					if type(v) == "function" and type(i) == "string" and not blist[i] and ((i:find("^Is") and i ~= "IsUnit") or i:find("^Can") or i:find("^Get")) then
 						output = pcallhelper(pcall(v, a1))
 					end
 					if output then Print("    |cff7fd5ff"..tostring(i).."|r => "..output)
